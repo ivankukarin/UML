@@ -1,0 +1,33 @@
+@startuml    
+actor User as S1
+boundary Browser as S2
+participant Application as S3
+participant VK_authorization_Server as S4
+participant Application_resource as S5
+
+S1 -> S2 : Вход в приложение
+S2 -> S3 : Войти через\n аккаунт VK
+S3 --> S2 : Редирект
+|||
+
+S1 -> S2 : Ввод логин-пароль VK
+S2 -> S4 : Ввод логин-пароль, запрос authcode
+S4 --> S2 : Получение authcode 
+|||
+S2 -> S3 : Обращение к Приложению с authcode
+S3 -> S4 : Запрос токена  POST
+|||  
+S4 -> S3 : Получение токена
+S4 -> S3 : Получение данных пользователя
+|||
+S3 -> S5 : Отправка данных пользователя\nЗапрос нужного сервиса \nв авторизованной зоне приложение\nтокен в запросе
+S5 -> S2 : Авторизован, получен ответ сервиса 
+
+
+' 4 response type_client_id redirect URI
+' 5 code redirect URI
+' 6 code
+
+
+
+@enduml
